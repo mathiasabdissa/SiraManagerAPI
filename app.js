@@ -20,8 +20,10 @@ app.use(bodyParser.json());
 http.createServer(function(request,response){
     response.writeHead(200,{"Content-Type":"text/plain"})
     response.end("Hello World")
-}).listen(process.env.PORT, () => {
-    console.log("Server is listening on port 3000");
+})
+app.get('/test', (req, res) => {
+    // We want to return an array of all the lists that belong to the authenticated user 
+    console.log("Hello world")
 })
 /**
  * GET /lists
@@ -155,3 +157,6 @@ app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
 }); 
 
 
+app.listen(process.env.PORT, () => {
+    console.log("Server is listening on port 3000");
+})
