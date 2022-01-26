@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const { mongoose } = require('./db/mongoose')
+const http = require('http')
 
 const host = 'localhost'
 const port = 8000
 // Load in the mongoose models
 const { List, Task } = require('./db/models');
+const { response } = require('express');
 
 //load Middleware
 app.use(bodyParser.json());
@@ -15,6 +17,12 @@ app.use(bodyParser.json());
 
 /* LIST ROUTES */
 
+http.createServer(function(request,response){
+    response.writeHead(200,{"Content-Type":"text/plain"})
+    response.end("Hello World")
+}).listen(process.env.PORT, () => {
+    console.log("Server is listening on port 3000");
+})
 /**
  * GET /lists
  * Purpose: Get all lists
@@ -147,6 +155,3 @@ app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
 }); 
 
 
-app.listen(process.env.PORT, () => {
-    console.log("Server is listening on port 3000");
-})
