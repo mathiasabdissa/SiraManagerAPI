@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+//const dbConfig=config.get('matthias.dbConfig');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TaskManager', {
+mongoose.connect('mongodb+srv://matthias:Matuks123.4567@siracluster.fo6pt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useCreatendex: true, 
     useFindAndModify: false, 
     useNewUrlParser: true, 
@@ -9,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/TaskManager', {
 }).then(() => {
     console.log("Connected to MongoDB successfully :)");
 }).catch((e) => {
-    console.log("Error while attempting to connect to MongoDB");
+    console.log("Error while attempting to connect to MongoDB"+e);
     console.log(e);
 });
 
