@@ -23,7 +23,8 @@ http.createServer(function(request,response){
 })
 app.get('/test', (req, res) => {
     // We want to return an array of all the lists that belong to the authenticated user 
-    console.log("Hello world")
+    res.writeHead(200,{"Content-Type":"text/plain"})
+    res.end("Hello World")
 })
 /**
  * GET /lists
