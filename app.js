@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const { mongoose } = require('./db/mongoose')
 const http = require('http')
@@ -9,6 +10,7 @@ const port = 8000
 // Load in the mongoose models
 const { List, Task } = require('./db/models');
 const { response } = require('express');
+app.use(cors());
 
 //load Middleware
 app.use(bodyParser.json());
