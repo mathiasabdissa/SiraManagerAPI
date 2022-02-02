@@ -289,6 +289,6 @@ app.post('/users/login', (req, res) => {
 })
 
 
-app.listen(8000, () => {
+app.listen(process.env.PORT, () => {
     console.log("Server is listening on port 8000");
 })
