@@ -8,8 +8,9 @@ const http = require('http')
 const host = 'localhost'
 const port = 8000
 // Load in the mongoose models
-const { List, Task, User } = require('./db/models');
+const { List, Task,User } = require('./db/models');
 const { response } = require('express');
+
 
 /* MIDDLEWARE  */
 
@@ -17,7 +18,19 @@ const { response } = require('express');
 app.use(bodyParser.json());
 
 // CORS HEADERS MIDDLEWARE
-app.use(cors());
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id");
+
+    res.header(
+        'Access-Control-Expose-Headers',
+        'x-access-token, x-refresh-token'
+    );
+
+    next();
+});
+
 
 // Verify Refresh Token Middleware (which will be verifying the session)
 let verifySession = (req, res, next) => {
@@ -76,6 +89,10 @@ let verifySession = (req, res, next) => {
 /* ROUTE HANDLERS */
 
 /* LIST ROUTES */
+http.createServer(function(request,response){
+    response.writeHead(200,{"Content-Type":"text/plain"})
+    response.end("Hello World")
+})
  
 app.get('/test', (req, res) => {
     // We want to return an array of all the lists that belong to the authenticated user 
@@ -197,7 +214,7 @@ app.patch('/lists/:listId/tasks/:taskId', (req, res) => {
     }, {
         $set: req.body
     }).then(() => {
-        res.sendStatus(200);
+        res.send({message:"updated successfully."});
     })
 });
 /**
@@ -289,6 +306,6 @@ app.post('/users/login', (req, res) => {
 })
 
 
-app.listen(process.env.PORT, () => {
+app.listen(8000, () => {
     console.log("Server is listening on port 8000");
 })
