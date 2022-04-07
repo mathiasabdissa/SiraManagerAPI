@@ -323,6 +323,6 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
 })
 
 
-app.listen(process.env.PORT || 8000, () => {
+app.listen(process.env.PORT, () => {
     console.log("Server is listening on port 8000");
 })
