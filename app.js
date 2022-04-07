@@ -94,7 +94,7 @@ let verifySession = (req, res, next) => {
     response.end("Hello World")
 }) */
  
-app.get('/', (req, res) => {
+app.get('/', function(req, res){
     // We want to return an array of all the lists that belong to the authenticated user 
     res.writeHead(200, { "Content-Type": "text/plain" })
     res.end("Hello World")
