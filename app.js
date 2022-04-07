@@ -1,12 +1,26 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const { mongoose } = require('./db/mongoose')
-const http = require('http')
+const http = require('http'),
+    bodyParser = require('body-parser'),
+    fs = require('fs'),
+    port = 8000;
+
+
+
+
 
 const host = 'localhost'
-const port = 8000
+
+/* const port = 8000 */
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+const customCss = fs.readFileSync((process.cwd() + "/swagger.css"), 'utf8');
+
+
+// Swagger UI import
+
 // Load in the mongoose models
 const { List, Task, User } = require('./db/models');
 const { response } = require('express');
@@ -15,6 +29,10 @@ const { response } = require('express');
 
 //load Middleware
 app.use(bodyParser.json());
+
+//Swagger UI API Accesss
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { customCss }));
 
 // CORS HEADERS MIDDLEWARE
 app.use(cors());
@@ -76,7 +94,23 @@ let verifySession = (req, res, next) => {
 /* ROUTE HANDLERS */
 
 /* LIST ROUTES */
- 
+/* http.createServer(function (request, response) {
+    response.writeHead(200, { "Content-Type": "text/html" })
+    fs.readFile('./index.html',);
+    response.end("Hello World");
+}) */
+
+app.get('/', (req, res) => {
+    // We want to return an array of all the lists that belong to the authenticated user 
+
+    fs.readFile('./index.html', null, (error, data) => {
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.write(data)
+        return res.end();
+    })
+
+})
+
 app.get('/test', (req, res) => {
     // We want to return an array of all the lists that belong to the authenticated user 
     res.writeHead(200, { "Content-Type": "text/plain" })
@@ -197,7 +231,7 @@ app.patch('/lists/:listId/tasks/:taskId', (req, res) => {
     }, {
         $set: req.body
     }).then(() => {
-        res.sendStatus(200);
+        res.send({ message: "Updated Successfull." });
     })
 });
 /**
@@ -219,7 +253,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
  * POST /users
  * Purpose: Sign up
  */
- app.post('/users', (req, res) => {
+app.post('/users', (req, res) => {
     // User sign up
 
     let body = req.body;
@@ -279,7 +313,7 @@ app.post('/users/login', (req, res) => {
  * GET /users/me/access-token
  * Purpose: generates and returns an access token
  */
- app.get('/users/me/access-token', verifySession, (req, res) => {
+app.get('/users/me/access-token', verifySession, (req, res) => {
     // we know that the user/caller is authenticated and we have the user_id and user object available to us
     req.userObject.generateAccessAuthToken().then((accessToken) => {
         res.header('x-access-token', accessToken).send({ accessToken });
@@ -289,6 +323,6 @@ app.post('/users/login', (req, res) => {
 })
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
     console.log("Server is listening on port 8000");
 })
