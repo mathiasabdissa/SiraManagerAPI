@@ -102,7 +102,7 @@ app.get('/', function(req, res){
 /**
  * GET /lists
  * Purpose: Get all lists
- */
+ */ 
 app.get('/lists', (req, res) => {
     // We want to return an array of all the lists that belong to the authenticated user 
     List.find({}).then((lists) => {
