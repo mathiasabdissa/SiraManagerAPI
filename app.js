@@ -89,12 +89,12 @@ let verifySession = (req, res, next) => {
 /* ROUTE HANDLERS */
 
 /* LIST ROUTES */
-http.createServer(function(request,response){
+/* http.createServer(function(request,response){
     response.writeHead(200,{"Content-Type":"text/plain"})
     response.end("Hello World")
-})
+}) */
  
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
     // We want to return an array of all the lists that belong to the authenticated user 
     res.writeHead(200, { "Content-Type": "text/plain" })
     res.end("Hello World")
