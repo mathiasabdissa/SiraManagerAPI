@@ -2,3 +2,19 @@
 
 # SiraMangager
 SiraMangager is sira managing application that helps you in doing your sira in well organized and managed way.
+
+## Installation 💻
+
+Install SiraManager-frontend with npm
+
+```bash
+  cd SiraManagerAPI
+  npm install 
+  npm start
+`
+
+## Live Server ✈️
+
+Here is the live deployed site
+[SiraManager](https://siramanager-api.herokuapp.com/)
+
