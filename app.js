@@ -122,7 +122,7 @@ app.get("/", function (req, res) {
  * GET /lists
  * Purpose: Get all lists
  */
-app.get("/lists", authenticate, (req, res) => {
+app.get("/lists", (req, res) => {
   // We want to return an array of all the lists that belong to the authenticated user
   List.find({
     //_userId: req.user_id,
@@ -139,7 +139,7 @@ app.get("/lists", authenticate, (req, res) => {
  * POST /lists
  * Purpose: Create a list
  */
-app.post("/lists", authenticate, (req, res) => {
+app.post("/lists", (req, res) => {
   // We want to create a new list and return the new list document back to the user (which includes the id)
   // The list information (fields) will be passed in via the JSON request body
   let title = req.body.title;
@@ -159,7 +159,7 @@ app.post("/lists", authenticate, (req, res) => {
  * Purpose: Update a specified list
  */
 
-app.patch("/lists/:id", authenticate, (req, res) => {
+app.patch("/lists/:id", (req, res) => {
   // We want to update the specified list (list document with id in the URL) with the new values specified in the JSON body of the request
   List.findOneAndUpdate(
     { _id: req.params.id, _userId: req.user_id },
@@ -175,7 +175,7 @@ app.patch("/lists/:id", authenticate, (req, res) => {
  * DELETE /lists/:id
  * Purpose: Delete a list
  */
-app.delete("/lists/:id", authenticate, (req, res) => {
+app.delete("/lists/:id", (req, res) => {
   // We want to delete the specified list (document with id in the URL)
   List.findOneAndRemove({
     _id: req.params.id,
@@ -261,7 +261,7 @@ app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
  * DELETE /lists/:listId/tasks/:taskId
  * Purpose: Delete a task
  */
-app.delete("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {
+app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
   List.findOne({
     _id: req.params.listId,
     _userId: req.user_id,
