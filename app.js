@@ -11,6 +11,7 @@ const port = 8000;
 const { List, Task, User } = require("./db/models");
 const { response } = require("express");
 const jwt = require("jsonwebtoken");
+const path=require('path')
 
 /* MIDDLEWARE  */
 
@@ -112,11 +113,13 @@ let verifySession = (req, res, next) => {
     response.writeHead(200,{"Content-Type":"text/plain"})
     response.end("Hello World")
 }) */
+app.use(express.static(__dirname+'/public'));
 
 app.get("/", function (req, res) {
   // We want to return an array of all the lists that belong to the authenticated user
   res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello World");
+  //res.end("Hello World")
+  res.sendFile(__dirname+"public/index.html");
 });
 /**
  * GET /lists
@@ -261,7 +264,7 @@ app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
  * DELETE /lists/:listId/tasks/:taskId
  * Purpose: Delete a task
  */
-app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
+app.delete("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {
   List.findOne({
     _id: req.params.listId,
     _userId: req.user_id,
