@@ -264,7 +264,7 @@ app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
  * DELETE /lists/:listId/tasks/:taskId
  * Purpose: Delete a task
  */
-app.delete("/lists/:listId/tasks/:taskId", authenticate, (req, res) => {
+app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
   List.findOne({
     _id: req.params.listId,
     _userId: req.user_id,
