@@ -19,8 +19,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-
 // CORS HEADERS MIDDLEWARE
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -181,7 +179,7 @@ app.delete("/lists/:id", authenticate, (req, res) => {
   // We want to delete the specified list (document with id in the URL)
   List.findOneAndRemove({
     _id: req.params.id,
-    _userId: req.user_id
+    _userId: req.user_id,
   }).then((removedListDoc) => {
     res.send(removedListDoc);
     deleteTasksFromList(removedListDoc._id);
@@ -388,6 +386,6 @@ let deleteTasksFromList = (_listId) => {
   });
 };
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log("Server is listening on port 8000");
 });
