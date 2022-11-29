@@ -149,7 +149,7 @@ app.post("/lists", (req, res) => {
 
   let newList = new List({
     title,
-    _userId: req.user_id,
+    //_userId: req.user_id,
   });
   newList.save().then((listDoc) => {
     // the full list document is returned (incl. id)
