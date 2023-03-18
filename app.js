@@ -11,7 +11,7 @@ const port = 8000;
 const { List, Task, User } = require("./db/models");
 const { response } = require("express");
 const jwt = require("jsonwebtoken");
-const path=require('path')
+const path = require('path')
 
 /* MIDDLEWARE  */
 
@@ -39,6 +39,7 @@ app.use(function (req, res, next) {
 
   next();
 });
+
 //check whether the request has a valid JWT access token
 let authenticate = (req, res, next) => {
   let token = req.header("x-access-token");
@@ -70,7 +71,6 @@ let verifySession = (req, res, next) => {
             "User not found. Make sure that the refresh token and user id are correct",
         });
       }
-
       // if the code reaches here - the user was found
       // therefore the refresh token exists in the database - but we still have to check if it has expired or not
 
@@ -113,13 +113,13 @@ let verifySession = (req, res, next) => {
     response.writeHead(200,{"Content-Type":"text/plain"})
     response.end("Hello World")
 }) */
-app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get("/", function (req, res) {
   // We want to return an array of all the lists that belong to the authenticated user
   res.writeHead(200, { "Content-Type": "text/plain" });
   //res.end("Hello World")
-  res.sendFile(__dirname+"public/index.html");
+  res.sendFile(__dirname + "public/index.html");
 });
 /**
  * GET /lists
@@ -149,7 +149,7 @@ app.post("/lists", (req, res) => {
 
   let newList = new List({
     title,
-    //_userId: req.user_id,
+    // _userId: req.user_id,
   });
   newList.save().then((listDoc) => {
     // the full list document is returned (incl. id)
@@ -221,9 +221,12 @@ app.get("/lists/:listId/tasks/:taskId", (req, res) => {
  */
 app.post("/lists/:listId/tasks", (req, res) => {
   // We want to create a new task in a list specified by listId
-  List.findOne({})
-    .then((user) => {
-      if (user) {
+  List.findOne({
+    _id: req.params.listId,
+    // _userId: req.user_id
+  })
+    .then((list) => {
+      if (list) {
         return true;
       }
       return false;
@@ -237,6 +240,8 @@ app.post("/lists/:listId/tasks", (req, res) => {
         newTask.save().then((newTaskDoc) => {
           res.send(newTaskDoc);
         });
+      } else {
+        res.sendStatus(404);
       }
     });
 });
